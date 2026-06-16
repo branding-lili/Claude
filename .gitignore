@@ -20,6 +20,7 @@ rad.json
 *.bclicense
 *.flf
 #Test results file
-TestResults.xml50b4a61f-Novo_Projeto_pa_gina_de_produtoshandoff.zip
+TestResults.xml
+*.zip
 handoff/
 scraps/
