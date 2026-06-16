@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lili Sampedro · PDP Short Masculino Vichy Rosa · 4 alternativas</title>
+
+  <link rel="icon" href="assets/favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      background: #1a1612;
+      color: #faf6f1;
+      font-family: "Avenir", system-ui, sans-serif;
+    }
+    .studio-intro {
+      position: fixed;
+      top: 16px; left: 16px;
+      z-index: 50;
+      background: rgba(14,21,42,0.92);
+      color: #fff;
+      padding: 16px 20px;
+      border: 1px solid rgba(230,109,118,0.35);
+      max-width: 320px;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      line-height: 1.55;
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+      font-family: "Avenir", sans-serif;
+      border-radius: 12px;
+    }
+    .studio-intro b {
+      font-family: "Avenir", "Montserrat", sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 6px;
+      color: #f985a7;
+    }
+    .studio-intro span {
+      display: block;
+      margin-top: 8px;
+      color: rgba(255,255,255,0.55);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+  </style>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="studio-intro">
+    <b>PDP Short Masculino Vichy Rosa</b>
+    Quatro direções estratégicas para a mesma página, no design system real da Lili Sampedro.
+    <span>Arraste · zoom · 2× foca · tweaks ↘</span>
+  </div>
+
+  <div id="root"></div>
+
+  <script type="text/babel" src="design-canvas.jsx"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="shared.jsx"></script>
+  <script type="text/babel" src="alt-a.jsx"></script>
+  <script type="text/babel" src="alt-b.jsx"></script>
+  <script type="text/babel" src="alt-c.jsx"></script>
+  <script type="text/babel" src="alt-d.jsx"></script>
+  <script type="text/babel" src="alt-a-mobile.jsx"></script>
+  <script type="text/babel" src="alt-b-mobile.jsx"></script>
+  <script type="text/babel" src="alt-c-mobile.jsx"></script>
+  <script type="text/babel" src="alt-d-mobile.jsx"></script>
+
+  <script type="text/babel">
+    const { DesignCanvas, DCSection, DCArtboard } = window;
+    const { useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakColor } = window;
+
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "estampa": "#FC8896",
+      "viewport": "ambos",
+      "tom": "editorial"
+    }/*EDITMODE-END*/;
+
+    function App() {
+      const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+      React.useEffect(() => {
+        // Tom: classes drive CSS that quiets/loudens the page
+        document.body.classList.remove("tom-editorial", "tom-comercial");
+        document.body.classList.add(`tom-${t.tom}`);
+      }, [t.tom]);
+
+      React.useEffect(() => {
+        // Estampa: seasonal accent color piped into the brand token
+        document.documentElement.style.setProperty("--ls-vichy-rosa", t.estampa);
+        // Recompute the soft/pale variants from the chosen hue
+        const map = {
+          "#FC8896": { soft: "#ff8798", pale: "#ffbfb8" },
+          "#22423C": { soft: "#3d6d63", pale: "#bcd3ce" },
+          "#84B8F1": { soft: "#9cc5f4", pale: "#cee2f7" },
+          "#F984A7": { soft: "#ff9bb7", pale: "#ffccdc" },
+        };
+        const v = map[t.estampa] || map["#FC8896"];
+        document.documentElement.style.setProperty("--ls-vichy-rosa-soft", v.soft);
+        document.documentElement.style.setProperty("--ls-vichy-rosa-pale", v.pale);
+      }, [t.estampa]);
+
+      const showMob = t.viewport !== "desktop";
+      const showDesk = t.viewport !== "mobile";
+
+      const mobileWidth = 390;
+      const deskWidth = 1280;
+
+      return (
+        <React.Fragment>
+          <DesignCanvas>
+            <DCSection
+              id="a-editorial"
+              title="A · Editorial Vichy"
+              subtitle="aspiracional · estampa pintada à mão"
+            >
+              {showMob && (
+                <DCArtboard id="a-mob" label="Mobile" width={mobileWidth} height={2120}>
+                  <window.AltAMobile />
+                </DCArtboard>
+              )}
+              {showDesk && (
+                <DCArtboard id="a-desk" label="Desktop" width={deskWidth} height={4500}>
+                  <window.AltA />
+                </DCArtboard>
+              )}
+            </DCSection>
+
+            <DCSection
+              id="b-rapida"
+              title="B · Decisão Rápida"
+              subtitle="objetiva · acima da dobra responde tudo"
+            >
+              {showMob && (
+                <DCArtboard id="b-mob" label="Mobile" width={mobileWidth} height={2580}>
+                  <window.AltBMobile />
+                </DCArtboard>
+              )}
+              {showDesk && (
+                <DCArtboard id="b-desk" label="Desktop" width={deskWidth} height={3300}>
+                  <window.AltB />
+                </DCArtboard>
+              )}
+            </DCSection>
+
+            <DCSection
+              id="c-confianca"
+              title="C · Confiança & Caimento"
+              subtitle="reduz risco · caimento real · prova social"
+            >
+              {showMob && (
+                <DCArtboard id="c-mob" label="Mobile" width={mobileWidth} height={2500}>
+                  <window.AltCMobile />
+                </DCArtboard>
+              )}
+              {showDesk && (
+                <DCArtboard id="c-desk" label="Desktop" width={deskWidth} height={4200}>
+                  <window.AltC />
+                </DCArtboard>
+              )}
+            </DCSection>
+
+            <DCSection
+              id="d-familia"
+              title="D · Ecossistema Família"
+              subtitle="kit família · 5% off · cross-sell"
+            >
+              {showMob && (
+                <DCArtboard id="d-mob" label="Mobile" width={mobileWidth} height={2240}>
+                  <window.AltDMobile />
+                </DCArtboard>
+              )}
+              {showDesk && (
+                <DCArtboard id="d-desk" label="Desktop" width={deskWidth} height={4900}>
+                  <window.AltD />
+                </DCArtboard>
+              )}
+            </DCSection>
+          </DesignCanvas>
+
+          <TweaksPanel>
+            <TweakSection label="Estampa de temporada" />
+            <TweakColor
+              label="Cor de acento"
+              value={t.estampa}
+              options={["#FC8896", "#22423C", "#84B8F1", "#F984A7"]}
+              onChange={(v) => setTweak("estampa", v)}
+            />
+
+            <TweakSection label="Viewport" />
+            <TweakRadio
+              label="Mostrar"
+              value={t.viewport}
+              options={["mobile", "ambos", "desktop"]}
+              onChange={(v) => setTweak("viewport", v)}
+            />
+
+            <TweakSection label="Tom da página" />
+            <TweakRadio
+              label="Atmosfera"
+              value={t.tom}
+              options={["editorial", "comercial"]}
+              onChange={(v) => setTweak("tom", v)}
+            />
+          </TweaksPanel>
+        </React.Fragment>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
